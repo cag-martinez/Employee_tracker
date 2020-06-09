@@ -52,7 +52,7 @@ function start() {
 //View employee
 function viewEmployee() {
     console.log("Employee List: \n");
-    connection.query("SELECT * FROM employee, SELECT * FROM role, SELECT * FROM department", function (err, res) {
+    connection.query("SELECT * FROM employee", function (err, res) {
       if (err) throw err;
       console.table(res);
       start();
@@ -116,7 +116,7 @@ function viewEmployee() {
                   if (err) throw err;
                   console.log(
                     res.affectedRows +
-                      " New Employee has been successfully added!\n"
+                      " New Employee added!\n"
                   );
                   start();
                 }
