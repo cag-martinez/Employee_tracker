@@ -52,7 +52,7 @@ function start() {
 //View employee
 function viewEmployee() {
     console.log("Employee List: \n");
-    connection.query("SELECT * FROM employee", function (err, res) {
+    connection.query("SELECT * FROM employee", + "role", + "department", function (err, res) {
       if (err) throw err;
       console.table(res);
       start();
