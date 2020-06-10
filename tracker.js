@@ -31,15 +31,21 @@ function start() {
         name: "action",
         type: "list",
         message: "Would you like to do?",
-        choices: ["Add employee", "View employee", "Update employee"]
+        choices: ["Add employee", "View employees by name", "View employees by role ID", "View employees by department ID", "Update employee"]
       })
       .then(function(answer) {
         // based on their answer, call to add, view or uupdate employee functions
         if (answer.action === "Add employee") {
             addEmployee();
         }
-        else if(answer.action === "View employee") {
+        else if(answer.action === "View employees by name") {
             viewEmployee();
+        }
+        else if(answer.action === "View employees by role ID") {
+            viewEmployeeRole();
+        }
+        else if(answer.action === "View employees by department ID") {
+            viewEmployeeDepartment();
         } 
         else if(answer.action === "Update employee") {
             updateEmployee();
@@ -52,12 +58,30 @@ function start() {
 //View employee
 function viewEmployee() {
     console.log("Employee List: \n");
-    connection.query("SELECT * FROM employee", + "role", + "department", function (err, res) {
+    connection.query("SELECT * FROM employee", function (err, res) {
       if (err) throw err;
       console.table(res);
       start();
     });
   }
+  //View employee
+function viewEmployeeRole() {
+  console.log("Employee List: \n");
+  connection.query("SELECT * FROM role", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+}
+//View employee
+function viewEmployeeDepartment() {
+  console.log("Employee List: \n");
+  connection.query("SELECT * FROM department", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+}
 // Add employee
   function addEmployee() {
     console.log("Follow prompts to add new employee:\n");
@@ -141,3 +165,14 @@ function viewEmployee() {
         }
       });
   }
+  // //update employee
+  // function updateEmployee() {
+  //   inquirer
+  //   .prompt([
+  //     {
+  //       name:""
+  //       type:
+  //       message:
+  //     }
+  //   ])
+  // }
