@@ -179,110 +179,56 @@ function viewEmployeeDepartment() {
   // //update employee
 function updateEmployeeRole() {
     console.table("Updating employee role\n");
-    inquirer
-    .prompt([
-      {
-        name: "employee_id",
-        type: "input",
-        message: "Whats is the ID of the employee you wish to update?",
-      }
-    ])
-    .then(function(answer) {
-      var empId = answer.employee_id;
-      if(empId) {
-    inquirer
+
+    connection.query("SELECT * FROM employee", function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      inquirer
       .prompt([
         {
-          name: "title",
+          name: "employee_id",
           type: "input",
-          mesage: "What is the title?",
-        },
-        {
-          name: "salary",
-          type: "input",
-          message: "What is the employees salary?",
-        },
-        {
-          name: "dep_id",
-          type: "input",
-          message: "What is the employees ID?"
-        },
+          message: "Whats is the ID of the employee you wish to update?",
+        }
       ])
-      .then(function(answer) {
-
-      var newTitle = answer.title;
-      var newSalary = answer.salary;
-      var newId = answer.dep_id;
-
-      var query = connection.query(
-      "UPDATE role SET ?",
-      [
-        {
-          title: newTitle, 
-          salary: newSalary,
-          department_id: newId,
-        },
-      ],
-      function(err, res) {
-        if (err) throw err;
-        console.table(res.affectedRows + "Employee role updated!\n");
+       .then(function(empIdAnswer) {
+        connection.query("SELECT * FROM role", function (err, res) {
+          if (err) throw err;
+          console.table(res);
         
-        viewEmployeeRole();
-      }
-    );
-    // logs the actual query being run
-    console.table(query.sql);
-  })
-}
-})
-}
-  
+          inquirer
+            .prompt([
+              {
+                name: "newRoleId",
+                type: "input",
+                mesage: "What is the new role ID you want to update to?",
+              }
+            ])
+            .then(function(roleAnswer) {
 
-// function updateEmployee() {
-//   //console.log("Follow prompts to update Role: \n");
-//   inquirer
-//     .prompt([
-//       {
-//         name: "employee_id",
-//         type: "input",
-//         message: "Enter employee's id:"
-//       },
-//     ])
-//     .then(function (answer) {
-//       var id = answer.id;
-//       if(id){
-//       inquirer
-//         .prompt([
-//           {
-//             type: "list",
-//             message: "Enter employees name:",
-//             choices: [
-//               "Developer",
-//               "Designer",
-//               "Content creator",
-//             ],
-//             // name: "role_type",
-//           },
-//           {
-//             type: "input",
-//             message: "Enter new salary:",
-//             name: "salary",
-//           },
-//           {
-//             type: "input",
-//             message: "Enter department ID:",
-//             name: "dept_id",
-//           },
-//         ])
-//         function (err, res) {
-//           if (err) throw err;
-//           console.log(res.affectedRows + " Role updated!\n");
-//           // Call deleteRole AFTER the UPDATE completes
-//           viewRole();
-//           //deleteRole();
-//         }
-//       // );
-//     };
-//   }
-// );
-// }
+              console.log('empIdAnswer!!!', empIdAnswer)
+              console.log('role answer', roleAnswer)
+              var query = connection.query(
+                  "UPDATE employee SET ? WHERE id = ? ",
+                  [
+                    {
+                      role_id: parseInt(roleAnswer.newRoleId),
+                    },
+                    parseInt(empIdAnswer.employee_id),
+                  ],
+                  function(err, res) {
+                    if (err) throw err;
+                    console.table(res.affectedRows + "Employee role updated!\n");
+                    
+                    viewEmployeeRole();
+                  }
+                );
+            })
+          
+
+        });
+       })
+   
+    });
+
+  }
