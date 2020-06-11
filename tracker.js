@@ -62,9 +62,6 @@ function start() {
             updateEmployeeRole();
             break;
         }
-        // else{
-        //   connection.end();
-        // }
       });
   }
 //View employee
@@ -76,7 +73,7 @@ function viewEmployee() {
       start();
     });
   }
-  //View employee
+  //View employee role
 function viewEmployeeRole() {
   console.log("Employee List: \n");
   connection.query("SELECT * FROM role", function (err, res) {
@@ -85,7 +82,7 @@ function viewEmployeeRole() {
     start();
   });
 }
-//View employee
+//View employee department
 function viewEmployeeDepartment() {
   console.table("Employee List: \n");
   connection.query("SELECT * FROM department", function (err, res) {
@@ -176,7 +173,7 @@ function viewEmployeeDepartment() {
         }
       });
   }
-  // //update employee
+  //update employee role
 function updateEmployeeRole() {
     console.table("Updating employee role\n");
 
